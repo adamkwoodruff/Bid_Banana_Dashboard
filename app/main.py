@@ -84,9 +84,9 @@ def index(
     query = query.filter(Opportunity.fit_score >= min_score)
     opportunities = query.order_by(Opportunity.priority.desc(), Opportunity.fit_score.desc()).all()
     return templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
+        request=request,
+        name="index.html",
+        context={
             "opportunities": opportunities,
             "statuses": STATUSES,
             "filters": {
@@ -106,7 +106,14 @@ def detail(opp_id: int, request: Request, db: Session = Depends(get_db)):
     opp = db.query(Opportunity).filter(Opportunity.id == opp_id).first()
     if not opp:
         raise HTTPException(status_code=404, detail="Opportunity not found")
-    return templates.TemplateResponse("detail.html", {"request": request, "opp": opp, "statuses": STATUSES})
+    return templates.TemplateResponse(
+    request=request,
+    name="detail.html",
+    context={
+        "opp": opp,
+        "statuses": STATUSES,
+    },
+)
 
 
 @app.post("/opportunities/{opp_id}/update")
