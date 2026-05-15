@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <title>Woodruff Opportunities</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>Woodruff Engineering Opportunities Dashboard</h1>
+
+  <div class="actions">
+    <form action="/refresh/sam" method="post"><button type="submit">Refresh opportunities (SAM.gov)</button></form>
+    <form action="/import/bid-banana" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".csv" required>
+      <button type="submit">Import Bid Banana CSV</button>
+    </form>
+    <a href="/export.csv">Export CSV</a>
+  </div>
+
+  <form method="get" class="filters">
+    <input type="text" name="q" placeholder="Keyword" value="{{filters.q}}">
+    <input type="text" name="buyer" placeholder="Buyer" value="{{filters.buyer}}">
+    <select name="source">
+      <option value="">All sources</option>
+      <option value="SAM.gov" {% if filters.source=='SAM.gov' %}selected{% endif %}>SAM.gov</option>
+      <option value="Bid Banana" {% if filters.source=='Bid Banana' %}selected{% endif %}>Bid Banana</option>
+    </select>
+    <select name="status">
+      <option value="">All statuses</option>
+      {% for s in statuses %}
+      <option value="{{s}}" {% if filters.status==s %}selected{% endif %}>{{s}}</option>
+      {% endfor %}
+    </select>
+    <input type="date" name="deadline_before" value="{{filters.deadline_before}}">
+    <input type="number" name="min_score" min="0" max="100" step="1" value="{{filters.min_score}}">
+    <button type="submit">Apply filters</button>
+  </form>
+
+  <table>
+    <tr><th>Title</th><th>Source</th><th>Buyer</th><th>Deadline</th><th>Posted</th><th>Value</th><th>Location</th><th>Fit</th><th>Recommendation</th><th>Status</th><th>Link</th></tr>
+    {% for o in opportunities %}
+    <tr>
+      <td><a href="/opportunities/{{o.id}}">{{o.title}}</a>{% if o.priority %} ⭐{% endif %}</td>
+      <td>{{o.source}}</td>
+      <td>{{o.buyer}}</td>
+      <td>{{o.deadline}}</td>
+      <td>{{o.posted_date}}</td>
+      <td>{{o.contract_value}}</td>
+      <td>{{o.location}}</td>
+      <td>{{'%.1f' % o.fit_score}}</td>
+      <td>{{o.recommendation}}</td>
+      <td>{{o.status}}</td>
+      <td>{% if o.original_link %}<a target="_blank" href="{{o.original_link}}">Open</a>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
