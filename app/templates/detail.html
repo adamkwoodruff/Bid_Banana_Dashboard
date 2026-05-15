@@ -1,0 +1,21 @@
+<!doctype html><html><head><title>{{opp.title}}</title><link rel="stylesheet" href="/static/style.css"></head><body>
+<a href="/">← Back</a>
+<h2>{{opp.title}}</h2>
+<p><b>Source:</b> {{opp.source}} | <b>Buyer:</b> {{opp.buyer}}</p>
+<p><b>Description:</b> {{opp.description}}</p>
+<p><b>Key requirements:</b> {{opp.requirements}}</p>
+<p><b>Why matches Woodruff:</b> {{opp.why_match}}</p>
+<p><b>Risks/blockers:</b> {{opp.risks}}</p>
+<p><b>Documents:</b> {{opp.documents}}</p>
+<p><b>Contact:</b> {{opp.contact}}</p>
+<p><b>Next action:</b> {{opp.next_action}}</p>
+<form method="post" action="/opportunities/{{opp.id}}/update">
+<label>Status</label>
+<select name="status">{% for s in statuses %}<option {% if opp.status==s %}selected{% endif %}>{{s}}</option>{% endfor %}</select>
+<label>Manual score override</label><input name="manual_score_override" value="{{opp.manual_score_override or ''}}">
+<label>Priority</label><input type="checkbox" name="priority" {% if opp.priority %}checked{% endif %}>
+<label>Next action</label><input name="next_action" value="{{opp.next_action or ''}}">
+<label>Notes</label><textarea name="notes">{{opp.notes or ''}}</textarea>
+<button type="submit">Save</button>
+</form>
+</body></html>

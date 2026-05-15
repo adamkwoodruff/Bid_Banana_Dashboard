@@ -1,0 +1,8 @@
+body{font-family:Arial,sans-serif;margin:20px;background:#fafafa;color:#222}
+table{width:100%;border-collapse:collapse;background:white}
+th,td{border:1px solid #ddd;padding:8px;font-size:14px}
+th{background:#f0f4f8}
+.actions{display:flex;gap:12px;align-items:center;margin-bottom:16px}
+form{display:inline-block}
+input,select,textarea,button{margin:4px;padding:6px}
+textarea{width:100%;min-height:120px}
